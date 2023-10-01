@@ -107,5 +107,36 @@ namespace ADOSamples.ConsoleUI
 
             sqlConnection.Close();
         }
+
+        public void TestReader()
+        {
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand = new SqlCommand
+            {
+                Connection = sqlConnection,
+                CommandType = CommandType.Text,
+                CommandText = "Select * from Categories"
+            };
+            var reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    Console.Write(reader.GetName(i));
+                    Console.Write(":");
+
+                    Console.Write(reader.GetValue(i));
+                    Console.Write("\t");
+                }
+                Console.WriteLine();
+            }
+            
+            
+          
+
+            sqlConnection.Close();
+        }
     }
 }

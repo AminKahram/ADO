@@ -13,8 +13,11 @@ using ADOSamples.ConsoleUI;
 //----------------------------------------------------
 
 SqlSample sqlSample = new SqlSample();
-sqlSample.TestCommand();
+//sqlSample.TestCommand();
 
 //----------------------------------------------------
 
+sqlSample.TestReader();
+
+//----------------------------------------------------
 Console.ReadKey();
