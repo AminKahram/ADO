@@ -238,5 +238,87 @@ namespace ADOSamples.ConsoleUI
             sqlConnection.Close();
 
         }
+
+        public void AddTransactional(string categoryName, int categoryId, string productName, string description, int price)
+        {
+            SqlParameter categoryNameParam = new()
+            {
+                ParameterName = "@Name",
+                DbType = DbType.String,
+                SqlValue = categoryName
+            };
+            SqlParameter categoryIdParam = new()
+            {
+                ParameterName = "@CategoryId",
+                DbType = DbType.Int32,
+                Direction = ParameterDirection.Input,
+                Value = categoryId
+            };
+
+            SqlParameter productNameParam = new()
+            {
+                ParameterName = "@NameProduct",
+                DbType = DbType.String,
+                Direction = ParameterDirection.Input,
+                Value = productName
+            };
+
+            SqlParameter descriptionParam = new()
+            {
+                ParameterName = "@Description",
+                DbType = DbType.String,
+                Direction = ParameterDirection.Input,
+                Value = description
+            };
+
+            SqlParameter priceParam = new()
+            {
+                ParameterName = "@Price",
+                DbType = DbType.Int32,
+                Direction = ParameterDirection.Input,
+                Value = price
+            };
+
+            SqlTransaction transaction = null;
+
+            SqlCommand addProduct = new SqlCommand
+            {
+                Connection = sqlConnection,
+                CommandType = CommandType.Text,
+                CommandText = $"Insert into Products(Name,Description,CategoryId,Price) values (@NameProduct,@Description,@CategoryId,@Price)"
+            };
+            sqlConnection.Open();
+
+            addProduct.Parameters.Add(categoryIdParam);
+            addProduct.Parameters.Add(productNameParam);
+            addProduct.Parameters.Add(descriptionParam);
+            addProduct.Parameters.Add(priceParam);
+
+            SqlCommand addCategory = new SqlCommand
+            {
+                Connection = sqlConnection,
+                CommandType = CommandType.Text,
+                CommandText = $"Insert into Categories(Name) values (@Name)"
+            };
+            addCategory.Parameters.Add(categoryNameParam);
+            try
+            {
+                transaction = sqlConnection.BeginTransaction();
+                int resultprod = addProduct.ExecuteNonQuery();
+                int resultcat = addCategory.ExecuteNonQuery();
+                transaction.Commit();
+                Console.WriteLine($"Affacted row in category is {resultcat}");
+                Console.WriteLine($"Affacted row in category is {resultprod}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                transaction.Rollback();
+            }
+
+
+            sqlConnection.Close();
+        }
+
     }
 }

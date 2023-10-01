@@ -29,6 +29,12 @@ SqlSample sqlSample = new SqlSample();
 
 //----------------------------------------------------
 
-sqlSample.AddProductParameter(2, "Abbas", "Abbasi Description" , 2000000000);
+//sqlSample.AddProductParameter(2, "Abbas", "Abbasi Description" , 2000000000);
+
+//----------------------------------------------------
+
+sqlSample.AddTransactional("tablue".PadLeft(990000000,'-'), 2, "Monaliza3", "Monaliza3 zhecond laugh", 222222222);
+
+//----------------------------------------------------
 
 Console.ReadKey();
