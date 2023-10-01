@@ -180,7 +180,62 @@ namespace ADOSamples.ConsoleUI
             sqlConnection.Open();
             int result  = sqlCommand.ExecuteNonQuery();
             Console.WriteLine($"Affacted row is {result}");
+            sqlConnection.Close();
 
+        }
+
+        public void AddProductParameter(int categoryId, string productName, string description, int price)
+        {
+            SqlParameter categoryIdParam = new()
+            {
+                ParameterName = "@CategoryId",
+                DbType = DbType.Int32,
+                Direction = ParameterDirection.Input,
+                Value = categoryId
+            };
+
+            SqlParameter productNameParam = new()
+            {
+                ParameterName = "@Name",
+                DbType = DbType.String,
+                Direction = ParameterDirection.Input,
+                Value = productName
+            };
+
+            SqlParameter descriptionParam = new()
+            {
+                ParameterName = "@Description",
+                DbType = DbType.String,
+                Direction = ParameterDirection.Input,
+                Value = description
+            };
+
+            SqlParameter priceParam = new()
+            {
+                ParameterName = "@Price",
+                DbType = DbType.Int32,
+                Direction = ParameterDirection.Input,
+                Value = price
+            };
+
+            SqlCommand sqlCommand = new SqlCommand
+            {
+                Connection = sqlConnection,
+                CommandType = CommandType.Text,
+                CommandText = $"Insert into Products(Name,Description,CategoryId,Price) values (@Name,@Description,@CategoryId,@Price)"
+            };
+            sqlConnection.Open();
+            
+            sqlCommand.Parameters.Add(categoryIdParam);
+            sqlCommand.Parameters.Add(productNameParam);
+            sqlCommand.Parameters.Add(descriptionParam);
+            sqlCommand.Parameters.Add(priceParam);
+
+
+            int result = sqlCommand.ExecuteNonQuery();
+            Console.WriteLine($"Affacted row is {result}");
+
+            sqlConnection.Close();
 
         }
     }

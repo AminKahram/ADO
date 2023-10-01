@@ -25,8 +25,10 @@ SqlSample sqlSample = new SqlSample();
 
 //----------------------------------------------------
 
-sqlSample.AddProduct(1, "Chomagh", "Chomagh description", 25000);
+//sqlSample.AddProduct(1, "Chomagh", "Chomagh description", 25000);
 
 //----------------------------------------------------
+
+sqlSample.AddProductParameter(2, "Abbas", "Abbasi Description" , 2000000000);
 
 Console.ReadKey();
