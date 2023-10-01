@@ -4,7 +4,11 @@ using ADOSamples.ConsoleUI;
 //SqlSample.FirstSample();
 //------------------------------------------------------
 
-SqlSample.WorkingWithConnection();
+//SqlSample.WorkingWithConnection();
+
+//----------------------------------------------------
+
+SqlSample.ConnectionBuilder();
 
 
 

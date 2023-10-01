@@ -47,5 +47,28 @@ namespace ADOSamples.ConsoleUI
             cnn.Close();
 
         }
+
+        public static void ConnectionBuilder()
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.InitialCatalog = "StoreDB";
+            builder.DataSource = ".";
+            builder.Password = "123";
+            builder.UserID = "sa";
+            builder.Encrypt = false;
+            builder.ConnectTimeout = 1000;
+            builder.CommandTimeout = 1000;
+            SqlConnection sqlConnection = new(builder.ConnectionString);
+
+            sqlConnection.Open();
+
+            Console.WriteLine(sqlConnection.Database);
+            Console.WriteLine(sqlConnection.DataSource);
+            Console.WriteLine(sqlConnection.CommandTimeout);
+            Console.WriteLine(sqlConnection.ConnectionTimeout);
+
+            sqlConnection.Close();
+
+        }
     }
 }
