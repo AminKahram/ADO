@@ -8,8 +8,13 @@ using ADOSamples.ConsoleUI;
 
 //----------------------------------------------------
 
-SqlSample.ConnectionBuilder();
+//SqlSample.ConnectionBuilder();
 
+//----------------------------------------------------
 
+SqlSample sqlSample = new SqlSample();
+sqlSample.TestCommand();
+
+//----------------------------------------------------
 
 Console.ReadKey();

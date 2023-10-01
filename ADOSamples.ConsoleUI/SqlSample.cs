@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +12,23 @@ namespace ADOSamples.ConsoleUI
 {
     public class SqlSample
     {
+        private SqlConnection sqlConnection;
         static string cnnstr { set; get; } = "Server=.; Initial catalog=StoreDB; User Id=sa; Password=123; Encrypt=False ";
         static SqlConnection cnn = new(cnnstr);
+
+        public SqlSample()
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.InitialCatalog = "StoreDB";
+            builder.DataSource = ".";
+            builder.Password = "123";
+            builder.UserID = "sa";
+            builder.Encrypt = false;
+            builder.ConnectTimeout = 1000;
+            builder.CommandTimeout = 1000;
+            sqlConnection = new(builder.ConnectionString);
+
+        }
         public static void FirstSample()
         {
 
@@ -69,6 +86,26 @@ namespace ADOSamples.ConsoleUI
 
             sqlConnection.Close();
 
+        }
+
+        public void TestCommand()
+        {
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand = new SqlCommand
+            {
+                Connection = sqlConnection,
+                CommandType = CommandType.Text,
+                CommandText = "Select * from Categories"
+            };
+            var reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine($"Id: {reader["Id"]}\t\t Name: {reader["Name"]}");
+            }
+
+            sqlConnection.Close();
         }
     }
 }
