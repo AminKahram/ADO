@@ -21,7 +21,12 @@ SqlSample sqlSample = new SqlSample();
 
 //----------------------------------------------------
 
-sqlSample.TestReaderMultiple();
+//sqlSample.TestReaderMultiple();
 
 //----------------------------------------------------
+
+sqlSample.AddProduct(1, "Chomagh", "Chomagh description", 25000);
+
+//----------------------------------------------------
+
 Console.ReadKey();

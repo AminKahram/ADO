@@ -168,5 +168,20 @@ namespace ADOSamples.ConsoleUI
             
             sqlConnection.Close();
         }
+
+        public void AddProduct(int categoryId, string productName, string description, int price)
+        {
+            SqlCommand sqlCommand = new SqlCommand
+            {
+                Connection = sqlConnection,
+                CommandType = CommandType.Text,
+                CommandText = $"Insert into Products(Name,Description,CategoryId,Price) values ('{productName}','{description}',{categoryId},{price})"
+            };
+            sqlConnection.Open();
+            int result  = sqlCommand.ExecuteNonQuery();
+            Console.WriteLine($"Affacted row is {result}");
+
+
+        }
     }
 }
