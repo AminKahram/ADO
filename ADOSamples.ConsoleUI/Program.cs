@@ -17,7 +17,11 @@ SqlSample sqlSample = new SqlSample();
 
 //----------------------------------------------------
 
-sqlSample.TestReader();
+//sqlSample.TestReader();
+
+//----------------------------------------------------
+
+sqlSample.TestReaderMultiple();
 
 //----------------------------------------------------
 Console.ReadKey();

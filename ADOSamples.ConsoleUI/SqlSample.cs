@@ -133,9 +133,39 @@ namespace ADOSamples.ConsoleUI
                 Console.WriteLine();
             }
             
-            
-          
+            sqlConnection.Close();
+        }
 
+        public void TestReaderMultiple()
+        {
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand = new SqlCommand
+            {
+                Connection = sqlConnection,
+                CommandType = CommandType.Text,
+                //CommandText = "Select * from Categories;Select * from Products"
+                CommandText = "MultioleResult"
+            };
+            var reader = sqlCommand.ExecuteReader();
+
+            do
+            {
+                while (reader.Read())
+                {
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        Console.Write(reader.GetName(i));
+                        Console.Write(":");
+
+                        Console.Write(reader.GetValue(i));
+                        Console.Write("\t");
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine("".PadLeft(100,'-'));
+            }while(reader.NextResult());
+            
             sqlConnection.Close();
         }
     }
