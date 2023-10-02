@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -254,7 +255,6 @@ namespace ADOSamples.ConsoleUI
                 Direction = ParameterDirection.Input,
                 Value = categoryId
             };
-
             SqlParameter productNameParam = new()
             {
                 ParameterName = "@NameProduct",
@@ -262,7 +262,6 @@ namespace ADOSamples.ConsoleUI
                 Direction = ParameterDirection.Input,
                 Value = productName
             };
-
             SqlParameter descriptionParam = new()
             {
                 ParameterName = "@Description",
@@ -270,7 +269,6 @@ namespace ADOSamples.ConsoleUI
                 Direction = ParameterDirection.Input,
                 Value = description
             };
-
             SqlParameter priceParam = new()
             {
                 ParameterName = "@Price",
@@ -320,5 +318,48 @@ namespace ADOSamples.ConsoleUI
             sqlConnection.Close();
         }
 
+        public void SimpleBulkInsert()
+        {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            SqlCommand command = new SqlCommand
+            {
+                CommandType = CommandType.Text,
+                Connection = sqlConnection,
+            };
+            sqlConnection.Open( );
+            for (int i = 0; i < 1000; i++)
+            {
+                command.CommandText = $"Insert into BulkTable(Name,Description) values ('Name {i}','Description {i}' )";
+                command.ExecuteNonQuery();
+            }
+            stopwatch.Stop();
+            sqlConnection.Close();
+            Console.WriteLine(stopwatch.ElapsedMilliseconds);
+        }
+
+        public void SimpleBulkCopyInsert()
+        {
+            
+
+            SqlBulkCopy sqlBulk = new SqlBulkCopy(sqlConnection);
+            sqlBulk.DestinationTableName = "BulkTable";
+            sqlConnection.Open();
+
+            DataTable dt = new();
+            dt.Columns.Add(new DataColumn("Name"));
+            dt.Columns.Add(new DataColumn("Description"));
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            for (int i = 0;i < 1000;i++) 
+            {
+                dt.Rows.Add(new object[] { $"Name {i}", $"Description {i}" });
+            }
+
+            sqlBulk.WriteToServer(dt);
+
+            stopwatch.Stop();
+            sqlConnection.Close();
+            Console.WriteLine(stopwatch.ElapsedMilliseconds);
+        }
     }
 }
